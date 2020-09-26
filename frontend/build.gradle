@@ -1,0 +1,26 @@
+plugins {
+    // For JDK 11+
+    id 'org.siouan.frontend-jdk11' version '4.0.0'
+}
+
+frontend {
+    nodeDistributionProvided = false
+    nodeVersion = '12.18.4'
+    nodeInstallDirectory = file("${rootProject.projectDir}/frontend-tools/node")
+    //nodeInstallDirectory = project.nodeInstallDirectory
+    yarnEnabled = true
+    yarnVersion = '1.22.4'
+    yarnInstallDirectory = file("${rootProject.projectDir}/frontend-tools/yarn")
+    assembleScript = 'run build'
+    cleanScript = 'run clean'
+    checkScript = 'run check'
+}
+
+import org.siouan.frontendgradleplugin.infrastructure.gradle.RunNpmYarn
+tasks.register('dev', RunNpmYarn) {
+    dependsOn tasks.named('installNode')
+    dependsOn tasks.named('installFrontend')
+    script = 'run dev'
+}
+
+description = 'jquitter frontend'
